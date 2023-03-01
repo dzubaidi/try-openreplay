@@ -2,10 +2,20 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@daud/styles/Home.module.css'
+import Tracker from '@openreplay/tracker/cjs';
+import { useEffect } from 'react';
+
+const tracker = new Tracker({
+  projectKey: "If1DLnxWN3l7XK5Zw3Mt",
+});
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  useEffect(() => { // use componentDidMount in case of React Class Component
+    tracker.start();
+  }, []);
+
   return (
     <>
       <Head>
