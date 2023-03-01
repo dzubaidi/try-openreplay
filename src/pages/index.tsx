@@ -4,9 +4,11 @@ import { Inter } from 'next/font/google'
 import styles from '@daud/styles/Home.module.css'
 import Tracker from '@openreplay/tracker/cjs';
 import { useEffect } from 'react';
+import axios from "axios";
 
 const tracker = new Tracker({
   projectKey: "If1DLnxWN3l7XK5Zw3Mt",
+  // __DISABLE_SECURE_MODE: true
 });
 
 const inter = Inter({ subsets: ['latin'] })
@@ -15,6 +17,32 @@ export default function Home() {
   useEffect(() => { // use componentDidMount in case of React Class Component
     tracker.start();
   }, []);
+
+  const clickLogData = (data: string) => {
+    let string = [data];
+    console.log('string:: ', string[1]); // undefined
+
+    const arr = [[1, 2, 3]];
+    // ❌ Cannot read properties of undefined (reading '0')
+    console.log('array:: ', arr); // undefined
+    console.log(arr[1][0]);
+    // return objData = null
+  }
+
+  const fetchClick = () => {
+    fetchFootballers();
+  }
+  const fetchFootballers = async () => {
+    await axios.get("http://localhost:3000/api/footballers")
+      .then((res) => {
+        console.log(res.data)
+      })
+  }
+
+  const handleClick = () => {
+    const footballersData = (state: any) => state?.footballers?.footballersData;
+    alert('footballersData: ' + footballersData)
+  }
 
   return (
     <>
@@ -27,8 +55,8 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.description}>
           <p>
-            Try to using openreplay&nbsp;
-            <a className={styles.code}>https://openreplay.com/</a>
+            Try to using openreplay LocalHost --&nbsp;
+            <a href='https://openreplay.com/'>https://openreplay.com/</a>
           </p>
           <div>
             <a
@@ -71,61 +99,57 @@ export default function Home() {
 
         <div className={styles.grid}>
           <button
-            onClick={() => doesNotExist()}
+            onClick={() => clickLogData('data')}
             className={styles.card}
           >
             <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
+              Console log <span>-&gt;</span>
             </h2>
             <p className={inter.className}>
               Find in-depth information about Next.js features and&nbsp;API.
             </p>
           </button>
 
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          <button
+            onClick={fetchClick}
             className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
+              Fetch <span>-&gt;</span>
             </h2>
             <p className={inter.className}>
               Learn about Next.js in an interactive course with&nbsp;quizzes!
             </p>
-          </a>
+          </button>
 
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          <button
+            onClick={() => { throw new Error("test") }}
             className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
+              throw Error <span>-&gt;</span>
             </h2>
             <p className={inter.className}>
               Discover and deploy boilerplate example Next.js&nbsp;projects.
             </p>
-          </a>
+          </button>
 
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          <button
+            onClick={handleClick}
             className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
           >
             <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
+              handle Click <span>-&gt;</span>
             </h2>
             <p className={inter.className}>
               Instantly deploy your Next.js site to a shareable URL
               with&nbsp;Vercel.
             </p>
-          </a>
+          </button>
         </div>
       </main>
     </>
   )
 }
+
+
