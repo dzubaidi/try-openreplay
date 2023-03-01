@@ -18,7 +18,7 @@ export default function Home() {
         <div className={styles.description}>
           <p>
             Try to using openreplay&nbsp;
-            <code className={styles.code}>https://openreplay.com/</code>
+            <a className={styles.code}>https://openreplay.com/</a>
           </p>
           <div>
             <a
